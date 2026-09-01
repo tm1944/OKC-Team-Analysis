@@ -22,3 +22,6 @@ db-down:
 db-logs:
 	docker compose logs -f postgres
 
+migrate:
+	uv run python migrate.py
+

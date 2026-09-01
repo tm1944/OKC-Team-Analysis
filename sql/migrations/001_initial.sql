@@ -1,6 +1,4 @@
--- Create the pgvector extension and the core relational tables.
-
-CREATE EXTENSION IF NOT EXISTS vector;
+-- Create the core relational tables.
 
 CREATE TABLE IF NOT EXISTS teams (
     id BIGSERIAL PRIMARY KEY,

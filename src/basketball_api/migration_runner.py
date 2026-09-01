@@ -27,8 +27,10 @@ def _ensure_schema_migrations_table(conn: Any) -> None:
 
 
 def _applied_versions(conn: Any) -> set[str]:
-    conn.execute("SELECT version FROM schema_migrations")
-    rows = conn.cursor.fetchall()
+    cursor = conn.execute("SELECT version FROM schema_migrations")
+    if cursor is None:
+        cursor = conn.cursor
+    rows = cursor.fetchall()
     return {row[0] for row in rows}
 
 
@@ -39,7 +41,7 @@ def run_migrations(conn: Any, migrations_dir: str | Path) -> list[str]:
     applied_versions: list[str] = []
 
     for migration_file in get_migration_files(migrations_dir):
-		#001_initial.sql -> 001_initial
+        # 001_initial.sql -> 001_initial
         version = migration_file.stem
         if version in applied:
             continue
