@@ -2,8 +2,6 @@ from __future__ import annotations
 
 from typing import Any
 
-import pytest
-
 from basketball_api.insert import insert_normalized_payload, insert_teams
 
 
@@ -12,9 +10,36 @@ class FakeConnection:
 
     def __init__(self) -> None:
         self.executed_queries: list[tuple[str, tuple[Any, ...]]] = []
+        self.external_id_maps = {
+            "teams": {1610612760: 1},
+            "players": {2544: 1},
+            "games": {},
+        }
 
-    def execute(self, query: str, params: tuple[Any, ...] = ()) -> None:
+    def execute(self, query: str, params: tuple[Any, ...] = ()) -> FakeCursor | None:
         self.executed_queries.append((query, params))
+        for table, external_column in (
+            ("teams", "nba_team_id"),
+            ("players", "nba_player_id"),
+            ("games", "nba_game_id"),
+        ):
+            if f"SELECT {external_column}, id FROM {table}" in query:
+                requested_ids = params[0]
+                rows = [
+                    (external_id, self.external_id_maps[table][external_id])
+                    for external_id in requested_ids
+                    if external_id in self.external_id_maps[table]
+                ]
+                return FakeCursor(rows)
+        return None
+
+
+class FakeCursor:
+    def __init__(self, rows: list[tuple[int, int]]) -> None:
+        self.rows = rows
+
+    def fetchall(self) -> list[tuple[int, int]]:
+        return self.rows
 
 
 def test_insert_teams_upserts_on_nba_team_id() -> None:
@@ -53,7 +78,7 @@ def test_insert_normalized_payload_returns_counts() -> None:
         "players": [
             {
                 "nba_player_id": 2544,
-                "team_id": 1,
+                "team_id": 1610612760,
                 "first_name": "Shai",
                 "last_name": "Gilgeous-Alexander",
                 "jersey_number": 2,

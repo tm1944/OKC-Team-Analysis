@@ -37,6 +37,7 @@ packages = ["src/basketball_api"]
 [tool.pytest.ini_options]
 addopts = "-q"
 testpaths = ["tests"]
+pythonpath = [".", "src"]
 markers = [
     "integration: requires the local PostgreSQL container",
     "live: calls an external NBA or OpenAI service",
@@ -53,4 +54,3 @@ select = ["E", "F", "I", "UP", "B", "SIM"]
 python_version = "3.14"
 strict = true
 packages = ["basketball_api"]
-

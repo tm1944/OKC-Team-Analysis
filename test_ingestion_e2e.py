@@ -2,6 +2,7 @@
 """End-to-end ingestion test: normalize → insert → verify idempotency."""
 
 import psycopg
+
 from src.basketball_api.config import get_settings
 from src.basketball_api.ingestion import normalize_payload
 from src.basketball_api.insert import insert_normalized_payload
@@ -29,7 +30,14 @@ def get_test_payload() -> dict:
                 "full_name": "Oklahoma City Thunder",
                 "city": "Oklahoma City",
                 "nickname": "Thunder",
-            }
+            },
+            {
+                "id": 1610612738,
+                "abbreviation": "BOS",
+                "full_name": "Boston Celtics",
+                "city": "Boston",
+                "nickname": "Celtics",
+            },
         ],
         "players": [
             {
@@ -51,9 +59,9 @@ def get_test_payload() -> dict:
         ],
         "games": [
             {
-                "id": 0021500001,
+                "id": 21500001,
                 "season": "2024-25",
-                "game_date": "2024-10-22",
+                "date": "2024-10-22",
                 "home_team_id": 1610612760,
                 "away_team_id": 1610612738,
                 "status": "Final",
@@ -61,15 +69,21 @@ def get_test_payload() -> dict:
         ],
         "team_games": [
             {
-                "game_id": 0021500001,
+                "game_id": 21500001,
                 "team_id": 1610612760,
                 "is_home": True,
                 "score": 105,
+            },
+            {
+                "game_id": 21500001,
+                "team_id": 1610612738,
+                "is_home": False,
+                "score": 101,
             }
         ],
         "shots": [
             {
-                "game_id": 0021500001,
+                "game_id": 21500001,
                 "team_id": 1610612760,
                 "player_id": 2544,
                 "event_number": 1,
