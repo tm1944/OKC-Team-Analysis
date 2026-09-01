@@ -1,4 +1,3 @@
--- Ticket 1, exercise 1
 -- Create the pgvector extension and the core relational tables.
 
 CREATE EXTENSION IF NOT EXISTS vector;
