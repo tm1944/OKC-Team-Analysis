@@ -67,6 +67,9 @@ then run `make migrate` and `make index-knowledge` to create live embeddings. St
 with `make run`; `/health/live` checks the process and `/health/ready` also checks PostgreSQL,
 pgvector, migrations, and model artifacts without calling OpenAI.
 
+For a containerized API and database, run `docker compose up --build`. Run migrations and
+model training first if you need `/health/ready` or model probabilities inside the API container.
+
 ```bash
 curl -X POST http://127.0.0.1:8000/analyze-player \
   -H 'content-type: application/json' \
