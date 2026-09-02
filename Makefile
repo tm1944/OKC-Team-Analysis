@@ -1,4 +1,4 @@
-.PHONY: install run test lint db-up db-down db-logs
+.PHONY: install run test lint db-up db-down db-logs migrate ingest-teams ingest-games ingest-players ingest-shots ingest-pbp ingest-all
 
 install:
 	uv sync --dev
@@ -25,3 +25,20 @@ db-logs:
 migrate:
 	uv run python migrate.py
 
+ingest-teams:
+	uv run python scripts/ingest.py teams
+
+ingest-games:
+	uv run python scripts/ingest.py games
+
+ingest-players:
+	uv run python scripts/ingest.py players
+
+ingest-shots:
+	uv run python scripts/ingest.py shots
+
+ingest-pbp:
+	uv run python scripts/ingest.py play-by-play
+
+ingest-all:
+	uv run python scripts/ingest.py all

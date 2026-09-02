@@ -8,7 +8,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 
-    database_url: str = "postgresql://basketball:basketball@localhost:5432/basketball"
+    database_url: str = "postgresql://basketball:basketball@localhost:5433/basketball"
     openai_api_key: str | None = None
     openai_embedding_model: str = "text-embedding-3-small"
     openai_generation_model: str = "gpt-5.4-mini"
@@ -22,4 +22,3 @@ class Settings(BaseSettings):
 @lru_cache
 def get_settings() -> Settings:
     return Settings()
-
