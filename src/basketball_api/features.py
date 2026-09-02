@@ -24,3 +24,11 @@ JOIN team_games AS tg ON tg.game_id = s.game_id AND tg.team_id = s.team_id
 WHERE s.player_id = %s
 ORDER BY g.game_date ASC, s.id ASC
 """
+
+
+# Training spans all available players in a season, while the player-scoped
+# query above is retained for later API analytics.
+SHOT_FEATURES_FOR_SEASON_SQL = SHOT_FEATURES_SQL.replace(
+    "WHERE s.player_id = %s",
+    "WHERE g.season = %s",
+)

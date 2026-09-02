@@ -47,6 +47,19 @@ uv run python scripts/ingest.py play-by-play --max-games 1
 To run every source in sequence, use `make ingest-all`. Add `--refresh` to the
 underlying command only when you deliberately want to replace cached NBA responses.
 
+## Ticket 2: train the shot model
+
+After games, players, and shots are loaded, train the small local PyTorch model:
+
+```bash
+make train-model
+```
+
+This writes ignored state-dictionary and JSON metadata artifacts under `artifacts/`.
+The training command preserves time order: it fits vocabularies and numeric scaling on
+the first 70% of games, validates on the next 15%, and reports final metrics on the
+last 15%.
+
 ## Tests
 
 ```bash
