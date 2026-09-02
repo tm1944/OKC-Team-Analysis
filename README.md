@@ -60,6 +60,19 @@ The training command preserves time order: it fits vocabularies and numeric scal
 the first 70% of games, validates on the next 15%, and reports final metrics on the
 last 15%.
 
+## Tickets 3 and 4: knowledge and API
+
+Committed Markdown evidence lives in `documents/`. Set `OPENAI_API_KEY` in ignored `.env`,
+then run `make migrate` and `make index-knowledge` to create live embeddings. Start the API
+with `make run`; `/health/live` checks the process and `/health/ready` also checks PostgreSQL,
+pgvector, migrations, and model artifacts without calling OpenAI.
+
+```bash
+curl -X POST http://127.0.0.1:8000/analyze-player \
+  -H 'content-type: application/json' \
+  -d '{"player":"Shai Gilgeous-Alexander","question":"How effective is he near the rim recently?","shot_context":{"shot_distance_ft":3,"shot_zone":"Restricted Area","quarter":4,"seconds_remaining":90,"is_home":true}}'
+```
+
 ## Tests
 
 ```bash

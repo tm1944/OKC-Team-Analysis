@@ -1,4 +1,4 @@
-.PHONY: install run test lint db-up db-down db-logs migrate ingest-teams ingest-games ingest-players ingest-shots ingest-pbp ingest-all train-model
+.PHONY: install run test lint db-up db-down db-logs migrate ingest-teams ingest-games ingest-players ingest-shots ingest-pbp ingest-all train-model index-knowledge
 
 install:
 	uv sync --dev
@@ -45,3 +45,6 @@ ingest-all:
 
 train-model:
 	uv run python scripts/train_model.py
+
+index-knowledge:
+	uv run python scripts/index_knowledge.py
